@@ -21,6 +21,7 @@ function UserForm(props) {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
 
+  /** @type {React.FormEventHandler<HTMLFormElement>} */
   const handleSubmit = (event) => {
     event.preventDefault();
     props.onUserAdd({ name, email });
