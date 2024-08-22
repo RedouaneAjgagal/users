@@ -32,7 +32,7 @@ function UserList(props) {
           <th>Email</th>
         </tr>
       </thead>
-      <tbody>{renderedUsers}</tbody>
+      <tbody data-testid="usersTable">{renderedUsers}</tbody>
     </table>
   );
 }
