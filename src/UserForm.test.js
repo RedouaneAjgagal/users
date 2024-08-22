@@ -42,3 +42,28 @@ test('it calls onUserAdd when submitting the form', async () => {
         email: "john@example.com"
     });
 });
+
+test('should clear the name and email inputs when submitting the form', async () => {
+    render(<UserForm onUserAdd={() => { }} />);
+
+    const nameInput = screen.getByRole("textbox", {
+        name: /name/i
+    });
+    const emailInput = screen.getByRole("textbox", {
+        name: /email/i
+    });
+    const submitButton = screen.getByRole("button", {
+        name: /add user/i
+    });
+
+    await userEvent.click(nameInput);
+    await userEvent.keyboard("John");
+
+    await userEvent.click(emailInput);
+    await userEvent.keyboard("john@example.com");
+
+    await userEvent.click(submitButton);
+
+    expect(nameInput).toHaveValue("");
+    expect(emailInput).toHaveValue("");
+});

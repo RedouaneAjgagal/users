@@ -25,6 +25,9 @@ function UserForm(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     props.onUserAdd({ name, email });
+
+    setName("");
+    setEmail("");
   };
 
   return (
