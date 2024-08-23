@@ -67,3 +67,13 @@ test('should clear the name and email inputs when submitting the form', async ()
     expect(nameInput).toHaveValue("");
     expect(emailInput).toHaveValue("");
 });
+
+test('should not display password input on userForm component', () => {
+    render(<UserForm onUserAdd={() => { }} />);
+
+    const passwordInput = screen.queryByRole("textbox", {
+        name: /passowrd/i
+    });
+
+    expect(passwordInput).toEqual(null);
+});
