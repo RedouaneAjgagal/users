@@ -1,5 +1,5 @@
 
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import UserForm from "./UserForm";
 
@@ -9,7 +9,9 @@ test('should display 2 inputs and a submit button', () => {
     render(<UserForm />);
 
     const inputs = screen.getAllByRole("textbox");
-    const submitButton = screen.getByRole("button");
+    const submitButton = screen.getByRole("button", {
+        name: /add user/i
+    });
 
     expect(inputs).toHaveLength(2);
     expect(submitButton).toBeInTheDocument();
@@ -33,7 +35,9 @@ test('it calls onUserAdd when submitting the form', async () => {
     await userEvent.click(emailInput);
     await userEvent.keyboard("john@example.com");
 
-    const submitButton = screen.getByRole("button");
+    const submitButton = screen.getByRole("button", {
+        name: /add user/i
+    });
     await userEvent.click(submitButton);
 
     expect(mock).toHaveBeenCalled();
@@ -76,4 +80,36 @@ test('should not display password input on userForm component', () => {
     });
 
     expect(passwordInput).toEqual(null);
+});
+
+
+
+const toContainRole = (containerEl, role, number = 1) => {
+    const elements = within(containerEl).getAllByRole(role);
+
+    if (elements.length === number) {
+        return {
+            pass: true
+        };
+    };
+
+    return {
+        pass: false,
+        message: () => `Expected to have ${number} element ${role}, but got ${elements.length}`
+    }
+};
+
+expect.extend({
+    toContainRole
+});
+
+
+test('should have only one button inside the form', () => {
+    render(<UserForm onUserAdd={() => { }} />);
+
+    const form = screen.getByRole("form", {
+        name: /add user/i
+    });
+
+    expect(form).toContainRole("button");
 });
